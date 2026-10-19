@@ -85,12 +85,37 @@ q2
 All of the joins in Task 1 were inner joins, which keep only the rows that have a match in *both* tables.
 In this task we look at what that throws away.
 
-- [ ] Join `simpsons_script_lines` to `simpsons_locations`, once with `inner_join` and once with `left_join`. How many rows does each result have? Why are they different?
-- [ ] Look at some of the rows that appear in the `left_join` result but not the `inner_join` one. What do they have in common?
-- [ ] Which episodes in `simpsons_episodes` have no script lines at all? (Hint: see "Other Types of Join" in the Week 5 notes.) Is there a pattern?
+- [x] Join `simpsons_script_lines` to `simpsons_locations`, once with `inner_join` and once with `left_join`. How many rows does each result have? Why are they different?
+- [x] Look at some of the rows that appear in the `left_join` result but not the `inner_join` one. What do they have in common?
+- [x] Which episodes in `simpsons_episodes` have no script lines at all? (Hint: see "Other Types of Join" in the Week 5 notes.) Is there a pattern?
 - [ ] In Task 1, we used `inner_join` to find which character and location pairs have the most lines. Was that the right choice?
 
 ::: {.solution}
+```{r}
+i_j = script_lines |> 
+  inner_join(locations, by = c("location_id" = "id"))
+i_j
+l_j = script_lines |> 
+  left_join(locations, by = c("location_id" = "id"))
+l_j
+# inner_join has 157848 rows and left_join has 158255 rows. They are different because inner_join only takes rows matched in both and left join keeps all the rows of the left table even if there isnt a match in the right table. 
+
+setdiff(l_j, i_j)
+# None of them have data in location.
+
+i_j2 = script_lines |> 
+  inner_join(episodes, by = c("episode_id" = "id"))
+i_j2
+r_j = script_lines |> 
+  right_join(episodes, by = c("episode_id" = "id")) 
+r_j
+
+setdiff(r_j, i_j2) |> 
+  group_by(title) |> 
+  summarise(title)
+
+
+```
 
 :::
 
