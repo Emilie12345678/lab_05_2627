@@ -103,14 +103,14 @@ l_j
 setdiff(l_j, i_j)
 # None of them have data in location.
 
-i_j2 = script_lines |> 
+lines_episodes = script_lines |> 
   inner_join(episodes, by = c("episode_id" = "id"))
-i_j2
+
 r_j = script_lines |> 
   right_join(episodes, by = c("episode_id" = "id")) 
 r_j
 
-setdiff(r_j, i_j2) |> 
+setdiff(r_j, lines_episodes) |> 
   group_by(title) |> 
   summarise(title)
 
@@ -129,6 +129,12 @@ Answer the following research questions:
 - [ ] In how many episodes are donuts / doughnuts mentioned? (Hint: be careful about capitalisation.)
 
 ::: {.solution}
+```{r}
+words_spoken = lines_episodes |> 
+  select(title, spoken_words) |> 
+  summarise(no_words = )
+words_spoken
+```
 
 :::
 
