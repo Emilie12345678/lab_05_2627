@@ -1,0 +1,71 @@
+---
+title: Lab 5 Practice Questions
+format:
+    html:
+        css: styles.css
+---
+
+## About these questions {.unnumbered}
+
+These questions are for extra practice after Lab 5, using the same data.
+Each section follows on from the matching task in `lab_05.qmd`, so do that task first.
+Questions marked **Extension** are more challenging.
+
+The cell below loads the data we used in the lab.
+
+```{r}
+#| message: false
+library(tidyverse)
+library(janitor)
+simpsons_characters <- read_csv("data/simpsons/simpsons_characters.csv")
+simpsons_episodes <- read_csv("data/simpsons/simpsons_episodes.csv")
+simpsons_locations <- read_csv("data/simpsons/simpsons_locations.csv")
+simpsons_script_lines <- read_csv("data/simpsons/simpsons_script_lines.csv")
+stock_data <- read_csv("data/all_stocks_5yr.csv") |>
+    clean_names()
+```
+
+### Joining Data
+
+These questions follow on from Tasks 1 and 1b of the lab.
+(Make sure your outputs print character names, not just IDs).
+
+- [ ] Which characters have lines in the most episodes?
+- [ ] **Extension:** Which characters appear together most frequently in episodes?
+
+::: {.solution}
+
+:::
+
+### String Processing
+
+These questions follow on from Task 2 of the lab.
+
+- [ ] How many lines contain exclamation marks?
+- [ ] **Extension:** Read about *regular expressions* (see the Regular Expressions tip in the Week 5 notes, and try [regex101](https://regex101.com/)). In the lab you counted the episodes that mention donuts / doughnuts. Answer that question again, this time using a single `str_detect` with a regular expression that matches both "donut" and "doughnut".
+- [ ] Some location names are written in capitals (e.g. `KITCHEN`) and others are not (e.g. `Simpson Home`). How many are in capitals? Use `str_to_title` to give all the location names consistent capitalisation. Look through the results: does `str_to_title` always give what you want?
+
+::: {.solution}
+
+:::
+
+### Dates
+
+These questions follow on from Tasks 3a and 3b of the lab.
+
+In `simpsons_episodes`, `read_csv` has already recognised `original_air_date` as a date.
+
+- [ ] On which day of the week did episodes first air? Is there anything surprising? (Hint: look at the formatting section of the Week 5 notes; the format code for the day of the week is `%A`.)
+- [ ] How many years ago did the first episode in the data air?
+
+::: {.solution}
+
+:::
+
+The next question uses the stock market data from Task 3b of the lab.
+
+- [ ] What is the average trading volume for each month, across all years?
+
+::: {.solution}
+
+:::
