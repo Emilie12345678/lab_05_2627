@@ -20,15 +20,35 @@ When you have finished the lab, there are more questions on the same data in `la
 In the directory `data/simpsons` there are four CSV files taken (and lightly sanitised) from [Kaggle](https://www.kaggle.com/datasets/prashant111/the-simpsons-dataset/data).
 Note that some columns have been dropped from `simpsons_script_lines` to make the exercise more interesting.
 
-- [ ] Load all four of the files
+- [x] Load all four of the files
 
 ::: {.solution}
+```{r}
+#| message: false
+library(tidyverse)
+characters <- read_csv("data/simpsons/simpsons_characters.csv")
+episodes <- read_csv("data/simpsons/simpsons_episodes.csv")
+locations <- read_csv("data/simpsons/simpsons_locations.csv")
+script_lines <- read_csv("data/simpsons/simpsons_script_lines.csv")
+
+```
 
 :::
 
-- [ ] Before joining anything, look at the first few rows of each table. What does one row of each table represent? Which columns link the tables together, and would you describe each link as one-to-one, one-to-many or many-to-many?
+- [x] Before joining anything, look at the first few rows of each table. What does one row of each table represent? Which columns link the tables together, and would you describe each link as one-to-one, one-to-many or many-to-many?
 
 ::: {.solution}
+```{r}
+characters |> 
+  filter(row_number() <= 5)
+episodes |> 
+  filter(row_number() <= 5)
+locations |> 
+  filter(row_number() <= 5)
+script_lines |> 
+  filter(row_number() <= 5)
+# 1 row of table 1 represents a character in the show, 1 row of table 2 represents an episode, 1 row of table 3 represents a location, 1 row of table 4 represents a script line. The tables are linked by the columns episode_id, character_id, and location_id. The links are one-to-many. 
+```
 
 :::
 
@@ -36,10 +56,27 @@ Note that some columns have been dropped from `simpsons_script_lines` to make th
 Answer the following research questions using `join` functions.
 (Make sure your outputs print e.g. location or character names, not just IDs).
 
-- [ ] Which character and location pairs have the most lines?
-- [ ] Which episodes feature the most characters? (Hint: look at the `n_distinct` function. Is every script line spoken by a character?)
+- [x] Which character and location pairs have the most lines?
+- [x] Which episodes feature the most characters? (Hint: look at the `n_distinct` function. Is every script line spoken by a character?)
 
 ::: {.solution}
+```{r}
+q1 <- script_lines |> 
+  inner_join(characters, by = c("character_id" = "id")) |> 
+  inner_join(locations, by = c("location_id" = "id")) |> 
+  group_by(character_name, location_name) |> 
+  summarise(n_lines=n()) |> 
+  arrange(desc(n_lines))
+q1
+
+q2 <- script_lines |> 
+  inner_join(characters, by = c("character_id" = "id")) |> 
+  inner_join(episodes, by = c("episode_id" = "id")) |> 
+  group_by(title) |> 
+  summarise(n_characters=n_distinct(character_name)) |> 
+  arrange(desc(n_characters))
+q2
+```
 
 :::
 
